@@ -1,5 +1,6 @@
 package com.rohit.careerNetworkingPlatform.postsService.controller;
 
+import com.rohit.careerNetworkingPlatform.postsService.auth.AuthContextHolder;
 import com.rohit.careerNetworkingPlatform.postsService.dto.PostCreateRequestDto;
 import com.rohit.careerNetworkingPlatform.postsService.dto.PostDto;
 import com.rohit.careerNetworkingPlatform.postsService.service.PostService;

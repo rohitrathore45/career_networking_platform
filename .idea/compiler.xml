@@ -10,7 +10,7 @@
         <module name="DiscoverServer" />
         <module name="APIGateway" />
       </profile>
-      <profile name="Annotation profile for APIGateway" enabled="true">
+      <profile name="Annotation profile for ConnectionsService" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />

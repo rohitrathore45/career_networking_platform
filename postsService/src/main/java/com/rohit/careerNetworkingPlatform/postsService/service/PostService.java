@@ -1,5 +1,8 @@
 package com.rohit.careerNetworkingPlatform.postsService.service;
 
+import com.rohit.careerNetworkingPlatform.postsService.auth.AuthContextHolder;
+import com.rohit.careerNetworkingPlatform.postsService.client.ConnectionsServiceClient;
+import com.rohit.careerNetworkingPlatform.postsService.dto.PersonDto;
 import com.rohit.careerNetworkingPlatform.postsService.dto.PostCreateRequestDto;
 import com.rohit.careerNetworkingPlatform.postsService.dto.PostDto;
 import com.rohit.careerNetworkingPlatform.postsService.entity.Post;
@@ -20,6 +23,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
+    private final ConnectionsServiceClient connectionsServiceClient;
 
     public PostDto createPost(PostCreateRequestDto postCreateRequestDto, Long userId) {
         log.info("Creating post user with id : {}", userId);
@@ -31,6 +35,14 @@ public class PostService {
 
     public PostDto getPostById(Long postId) {
         log.info("Getting the post with ID : {}", postId);
+
+        Long userId = AuthContextHolder.getCurrentUserId();
+
+        // TODO: Remove in future
+        // Call the connection service from post service and pass the userId inside the header
+
+        List<PersonDto> personDtoList = connectionsServiceClient.getFirstDegreeConnections(userId);
+
         Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post not found with id : "+ postId));
         return modelMapper.map(post, PostDto.class);
     }

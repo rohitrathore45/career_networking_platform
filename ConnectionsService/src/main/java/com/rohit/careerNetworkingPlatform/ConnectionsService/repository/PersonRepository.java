@@ -13,10 +13,8 @@ public interface PersonRepository extends Neo4jRepository<Person, Long> {
 
     Optional<Person> findByUserId(Long userId);
 
-    @Query("""
-        MATCH (personA:Person)-[:CONNECTED_TO]-(personB:Person)
-        WHERE personA.userId = $userId
-        RETURN DISTINCT personB
-    """)
+    @Query("match (personA:Person) -[:CONNECTED_TO]- (personB:Person)" +
+            " where personA.userId = $userId " +
+            "return personB")
     List<Person> getFirstDegreeConnections(Long userId);
 }
