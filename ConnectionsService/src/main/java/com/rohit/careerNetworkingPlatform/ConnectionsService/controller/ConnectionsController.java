@@ -12,16 +12,25 @@ import java.util.List;
 @RestController
 @RequestMapping("/core")
 @RequiredArgsConstructor
-@Slf4j
 public class ConnectionsController {
 
     private final ConnectionsService connectionsService;
 
     @GetMapping("/{userId}/first-degree")
-    public ResponseEntity<List<Person>> getFirstDegreeConnections(@PathVariable Long userId,
-                                                                  @RequestHeader("X-User-Id") Long userIdFromHeader) {
-        log.info("User id is : {}", userIdFromHeader);
+    public ResponseEntity<List<Person>> getFirstDegreeConnections(@PathVariable Long userId) {
         List<Person> personList = connectionsService.getFirstDegreeConnectionsOfUser(userId);
+        return ResponseEntity.ok(personList);
+    }
+
+    @GetMapping("/{userId}/second-degree")
+    public ResponseEntity<List<Person>> getSecondDegreeConnections(@PathVariable Long userId) {
+        List<Person> personList = connectionsService.getSecondDegreeConnectionsOfUser(userId);
+        return ResponseEntity.ok(personList);
+    }
+
+    @GetMapping("/{userId}/third-degree")
+    public ResponseEntity<List<Person>> getThirdDegreeConnections(@PathVariable Long userId) {
+        List<Person> personList = connectionsService.getThirdDegreeConnectionsOfUser(userId);
         return ResponseEntity.ok(personList);
     }
 }
