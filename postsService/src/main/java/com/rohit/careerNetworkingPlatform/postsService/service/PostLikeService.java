@@ -1,6 +1,9 @@
 package com.rohit.careerNetworkingPlatform.postsService.service;
 
+import com.rohit.careerNetworkingPlatform.postsService.auth.AuthContextHolder;
+import com.rohit.careerNetworkingPlatform.postsService.entity.Post;
 import com.rohit.careerNetworkingPlatform.postsService.entity.PostLike;
+import com.rohit.careerNetworkingPlatform.postsService.event.PostLiked;
 import com.rohit.careerNetworkingPlatform.postsService.exception.BadRequestException;
 import com.rohit.careerNetworkingPlatform.postsService.exception.ResourceNotFoundException;
 import com.rohit.careerNetworkingPlatform.postsService.repository.PostLikeRepository;
@@ -9,6 +12,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,13 +23,14 @@ public class PostLikeService {
     private final PostLikeRepository postLikeRepository;
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
+    private final KafkaTemplate<Long, PostLiked> postLikedKafkaTemplate;
 
     @Transactional
     public void likePost(Long postId) {
-        Long userId = 1L;
+        Long userId = AuthContextHolder.getCurrentUserId();
         log.info("User with id : {} Liking a post with id : {}", userId, postId);
 
-        postRepository.findById(postId)
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new ResourceNotFoundException("Post not found with id : " + postId));
 
         boolean hasAlreadyLiked = postLikeRepository.existsByUserIdAndPostId(userId, postId);
@@ -36,7 +41,13 @@ public class PostLikeService {
         postLike.setUserId(userId);
         postLikeRepository.save(postLike);
 
-        // TODO : send notification to the owner of the post
+
+        PostLiked postLiked = PostLiked.builder()
+                .postId(postId)
+                .likedByUserId(userId)
+                .ownerUserId(post.getUserId())
+                .build();
+        postLikedKafkaTemplate.send("post_liked_topic", postLiked);
 
     }
 

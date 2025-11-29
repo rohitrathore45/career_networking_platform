@@ -10,16 +10,17 @@
         <module name="DiscoverServer" />
         <module name="APIGateway" />
       </profile>
-      <profile name="Annotation profile for ConnectionsService" enabled="true">
+      <profile name="Annotation profile for userService" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
+        <processorPath>
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
         </processorPath>
+        <module name="NotificationService" />
         <module name="ConnectionsService" />
-        <module name="postsService" />
         <module name="userService" />
+        <module name="postsService" />
       </profile>
     </annotationProcessing>
   </component>
@@ -28,6 +29,7 @@
       <module name="APIGateway" options="-parameters" />
       <module name="ConnectionsService" options="-parameters" />
       <module name="DiscoverServer" options="-parameters" />
+      <module name="NotificationService" options="-parameters" />
       <module name="postsService" options="-parameters" />
       <module name="userService" options="-parameters" />
     </option>
