@@ -22,6 +22,15 @@
         <module name="userService" />
         <module name="postsService" />
       </profile>
+      <profile name="Annotation profile for UploaderService" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+        </processorPath>
+        <module name="UploaderService" />
+      </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
@@ -30,6 +39,7 @@
       <module name="ConnectionsService" options="-parameters" />
       <module name="DiscoverServer" options="-parameters" />
       <module name="NotificationService" options="-parameters" />
+      <module name="UploaderService" options="-parameters" />
       <module name="postsService" options="-parameters" />
       <module name="userService" options="-parameters" />
     </option>
